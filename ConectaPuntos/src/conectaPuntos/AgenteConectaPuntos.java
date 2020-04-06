@@ -3,7 +3,7 @@ package conectaPuntos;
 import java.util.Set;
 
 import agentesolitario.AgenteSolitario;
-
+//random comment
 public class AgenteConectaPuntos extends AgenteSolitario<EstadoConectaPuntos>{
 
 	protected AgenteConectaPuntos(EstadoConectaPuntos e) {
