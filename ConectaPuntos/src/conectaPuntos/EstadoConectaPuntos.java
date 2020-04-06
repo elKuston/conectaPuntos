@@ -9,13 +9,24 @@ import mundosolitario.OverrideHashCode;
 import mundosolitario.RepresentacionEstadoOptimizacion;
 
 public class EstadoConectaPuntos extends OverrideHashCode implements RepresentacionEstadoOptimizacion<EstadoConectaPuntos>{
+	//Constantes varias, que usar constantes siempre ayuda jeje
+	
+	//Caracteres para la representación del estado 
+	public static final char CASILLA_ROJA = 'R';
+	public static final char CASILLA_VERDE = 'v';
+	public static final char CASILLA_VACIA = '*';
+	
+	
+	//Los incrementos que hay que realizarle a la posicion de una casilla en x e y para obtener sus 4-vecinos
 	private static final int[] incrX = {1,0,-1,0}; //Right, up, left, down
 	private static final int[] incrY = {0, -1, 0, 1}; //Right, up, left, down
 	
+	//Estaticos para no tener que almacenarlos en cada estado, y ahorrar así algo de memoria 
 	private static Set<Pair<Integer, Integer>> rojos;	//Coordenadas (x,y) de los puntos rojos
-	private Set<Pair<Integer,Integer>> verdes;	//Coordendas (x,y) de los puntos verdes
 	
 	private static int tamX, tamY;
+	
+	private Set<Pair<Integer,Integer>> verdes;	//Coordendas (x,y) de los puntos verdes
 	
 	
 	
@@ -28,10 +39,14 @@ public class EstadoConectaPuntos extends OverrideHashCode implements Representac
 	
 	private EstadoConectaPuntos(Set<Pair<Integer, Integer>> verdes) {
 		this.verdes = new HashSet<>(verdes);
+		//this.verdes = verdes;
 	}
 	
 	
-
+	/**
+	 * @return calcula los sucesores de un estado
+	 */
+	
 	@Override
 	public List<EstadoConectaPuntos> calculaSucesores() {
 		List<EstadoConectaPuntos> sucesores = new ArrayList<>();
@@ -42,10 +57,13 @@ public class EstadoConectaPuntos extends OverrideHashCode implements Representac
 		}else {//Si hay verdes, se colocan al lado de las verdes
 			validas = verdes;
 		}*/
+		
+		//Primero cargamos las casillas a las cuales se le puede colocar un verde al lado. Aquí seguro que se puede optimizar muchísimo
 		Set<Pair<Integer, Integer>> validas; 
 		if(verdes.size()==0) {// Si no hay verdes, se puede colocar una casilla verde al lado de cualquier casilla roja
 			validas = new HashSet<>(rojos);
-		}else {// Si hay verdes, podemos colocar casillas verdes al lado de cualquier otra casilla verde o de cualquier casilla roja a la que se haya llegado (es decir, tiene un vecino verde)
+		}else {// Si hay verdes, podemos colocar casillas verdes al lado de cualquier otra casilla verde o de cualquier casilla roja a la que se haya llegado (es decir, tiene un vecino verde).
+			//Esto último es porque si permitiéramos colocar una casilla verde al lado de una roja a la que no se haya llegado, el algoritmo acabaría colocando simplemente una verde al lado de cada roja
 			validas = new HashSet<>(verdes);
 			for(Pair<Integer, Integer> p : rojos) {
 				int first = p.getFirst();
@@ -63,6 +81,7 @@ public class EstadoConectaPuntos extends OverrideHashCode implements Representac
 			}
 		}
 		
+		//Ahora calculamos los sucesores 
 		for(Pair<Integer, Integer> p : validas) {//Para cada casilla valida
 			int first = p.getFirst();
 			int second = p.getSecond();
@@ -91,7 +110,7 @@ public class EstadoConectaPuntos extends OverrideHashCode implements Representac
 
 	@Override
 	public int costeArco(EstadoConectaPuntos eDestino) {
-		return 1;//El coste de los arcos es constante, siempre 1
+		return 1;//El coste de los arcos es constante, siempre 1, ya que en cada movimiento solo colocamos una ficha
 	}
 
 
@@ -136,11 +155,11 @@ public class EstadoConectaPuntos extends OverrideHashCode implements Representac
 			for(int j=0;j<tamY;j++) {
 				Pair<Integer, Integer> p = new Pair<>(j,i);
 				if(rojos.contains(p)) {
-					sb.append("R");
+					sb.append(CASILLA_ROJA);
 				}else if(verdes.contains(p)) {
-					sb.append("v");
+					sb.append(CASILLA_VERDE);
 				}else {
-					sb.append("*");
+					sb.append(CASILLA_VACIA);
 				}
 				sb.append(" ");
 			}

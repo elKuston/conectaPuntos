@@ -8,10 +8,15 @@ import java.util.Set;
 public class Main {
 
 	public static void main(String[] args) {
+		//ejemplo();
+		//prueba(0,10,20,20);
 		ejemplo();
-		//prueba(0,40,100,100);
 
 	}
+	
+	/**
+	 * Resolución del ejemplo original propuesto por Teorema Pi ( https://twitter.com/TeoremaPi/status/1246159918832418816 )
+	 */
 	
 	public static void ejemplo() {
 		Set<Pair<Integer, Integer>> rojos = new HashSet<>();
@@ -27,12 +32,20 @@ public class Main {
 
 		long start = System.currentTimeMillis();
 		List<EstadoConectaPuntos> solucion = agente.aMono();
-		System.out.println("SOLUCION:");
-		System.out.println(solucion.get(solucion.size()-1));
 		
 		long elapsed = System.currentTimeMillis()-start;
+		
+		System.out.println("SOLUCION:");
+		System.out.println(solucion.get(solucion.size()-1));
 		System.out.println("Tiempo: "+elapsed+" ms");
 	}
+	/**
+	 * 
+	 * @param semilla la semilla para el random. Usar la misma semilla hará que se genere siempre el mismo mapa
+	 * @param nRojos el número de puntos rojos 
+	 * @param tamX el ancho del tablero
+	 * @param tamY el alto del tablero
+	 */
 	
 	public static void prueba(int semilla, int nRojos, int tamX, int tamY) {
 		Set<Pair<Integer, Integer>> rojos = new HashSet<>();
@@ -43,7 +56,12 @@ public class Main {
 		System.out.println("Tamano malla: "+tamX+"x"+tamY+"\nn puntos rojos: "+nRojos);
 		EstadoConectaPuntos e = new EstadoConectaPuntos(rojos, tamX, tamY);
 		AgenteConectaPuntos agente = new AgenteConectaPuntos(e);
-		agente.aMono();
+		long start = System.currentTimeMillis();
+		List<EstadoConectaPuntos> caminoSolucion = agente.aMono();
+		
+		long elapsed = System.currentTimeMillis()-start;
+		System.out.println("Tiempo: "+elapsed+" ms");
+		System.out.println(caminoSolucion.get(caminoSolucion.size()-1));
 	}
 
 }
