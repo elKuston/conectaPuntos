@@ -11,4 +11,4 @@ Como función heurística se utiliza la suma de las distancias mínimas de una c
 
 
 
-Nótese que no todo el código fue implementado por mí, parte del mismo pertenece a profesores de la UMA (se puede ver en los ficheros la anotación @author para más información)
+Nótese que no todo el código fue implementado por mí, parte del mismo pertenece a profesores de la UMA (se puede ver en los ficheros la anotación `@author` para más información)
